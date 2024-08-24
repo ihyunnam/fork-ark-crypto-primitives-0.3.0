@@ -71,15 +71,13 @@ where
             }
         }
 
-        println!("GOT PAST HERE");
-
         assert_eq!(padded_input.len() * 8, W::WINDOW_SIZE * W::NUM_WINDOWS);
         assert_eq!(parameters.params.generators.len(), W::NUM_WINDOWS);
 
         // Allocate new variable for commitment output.
         let input_in_bits: Vec<Boolean<_>> = padded_input
             .iter()
-            .flat_map(|byte| byte.to_bits_le().unwrap())
+            .flat_map(|byte| byte.to_bits_le().unwrap_or(vec![]))
             .collect();
         let input_in_bits = input_in_bits.chunks(W::WINDOW_SIZE);
         let mut result =
@@ -96,7 +94,6 @@ where
                 .zip(&parameters.params.randomness_generator),
         )?;
 
-        println!("RESULT {:?}", result);
         Ok(result)
     }
 }
