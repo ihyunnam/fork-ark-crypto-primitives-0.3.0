@@ -71,6 +71,8 @@ where
             }
         }
 
+        println!("GOT PAST HERE");
+
         assert_eq!(padded_input.len() * 8, W::WINDOW_SIZE * W::NUM_WINDOWS);
         assert_eq!(parameters.params.generators.len(), W::NUM_WINDOWS);
 
@@ -83,6 +85,7 @@ where
         let mut result =
             GG::precomputed_base_multiscalar_mul_le(&parameters.params.generators, input_in_bits)?;
 
+        println!("byte.to_bits_le() {:?}", byte.to_bits_le().value());
         // Compute h^r
         let rand_bits: Vec<_> =
             r.0.iter()
@@ -94,6 +97,7 @@ where
                 .zip(&parameters.params.randomness_generator),
         )?;
 
+        println!("RESULT {:?}", result);
         Ok(result)
     }
 }
