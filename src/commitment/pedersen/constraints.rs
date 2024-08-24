@@ -89,7 +89,10 @@ where
         // Compute h^r
         let rand_bits: Vec<_> =
             r.0.iter()
-                .flat_map(|byte| println!("byte.to_bits_le() {:?}", byte.to_bits_le().value()); byte.to_bits_le().unwrap())
+                .flat_map(|byte| {
+                    println!("byte.to_bits_le() {:?}", byte.to_bits_le().value());
+                    byte.to_bits_le().unwrap()
+                })
                 .collect();
         result.precomputed_base_scalar_mul_le(
             rand_bits
