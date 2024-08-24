@@ -85,14 +85,10 @@ where
         let mut result =
             GG::precomputed_base_multiscalar_mul_le(&parameters.params.generators, input_in_bits)?;
 
-        // println!("byte.to_bits_le() {:?}", byte.to_bits_le().value());
         // Compute h^r
         let rand_bits: Vec<_> =
             r.0.iter()
-                .flat_map(|byte| {
-                    println!("byte {:?}", byte.value());
-                    byte.to_bits_le().unwrap()
-                })
+                .flat_map(|byte| byte.to_bits_le().unwrap_or(vec![]))
                 .collect();
         result.precomputed_base_scalar_mul_le(
             rand_bits
