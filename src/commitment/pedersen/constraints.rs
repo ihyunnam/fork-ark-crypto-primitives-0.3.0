@@ -90,7 +90,7 @@ where
         let rand_bits: Vec<_> =
             r.0.iter()
                 .flat_map(|byte| {
-                    println!("byte.to_bits_le() {:?}", byte.to_bits_le().value());
+                    println!("byte.to_bits_le() {:?}", byte.to_bits_le());
                     byte.to_bits_le().unwrap()
                 })
                 .collect();
