@@ -30,7 +30,7 @@ pub trait PoseidonRoundParams<F: PrimeField>: Default + Clone {
 }
 
 /// The Poseidon permutation.
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]        // TODO: MUST REMOVE DEBUG
 pub struct Poseidon<F, P> {
     pub params: P,
     /// The round key constants
