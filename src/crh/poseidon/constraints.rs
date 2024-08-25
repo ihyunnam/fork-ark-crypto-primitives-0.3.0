@@ -8,7 +8,7 @@ use super::sbox::constraints::SboxConstraints;
 use super::PoseidonRoundParams;
 use super::{Poseidon, CRH};
 use crate::CRHGadget as CRHGadgetTrait;
-use ark_ff::PrimeField;
+// use ark_ff::PrimeField;
 use ark_r1cs_std::fields::fp::FpVar;
 use ark_r1cs_std::uint8::UInt8;
 use ark_r1cs_std::ToConstraintFieldGadget;
