@@ -468,7 +468,7 @@ impl PoseidonGrainLFSR {
                 // Construct the number
                 let bigint = F::BigInt::from_bits_le(&bits);
 
-                if let Some(f) = F::from_bigint(bigint) {
+                if let Some(f) = F::from_repr(bigint) {
                     res.push(f);
                     break;
                 }
