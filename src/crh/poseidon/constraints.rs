@@ -21,9 +21,9 @@ use ark_std::borrow::ToOwned;
 use ark_std::marker::PhantomData;
 use core::borrow::Borrow;
 
-#[derive(Derivative, Clone)]
+#[derive(Derivative, Clone, Debug)]     // TODO: MUST REMOVE DEBUG
 pub struct PoseidonRoundParamsVar<F: PrimeField, P: PoseidonRoundParams<F>> {
-    params: Poseidon<F, P>,
+    pub params: Poseidon<F, P>,     // TODO: MUST REMOVE PUB
 }
 
 pub struct CRHGadget<F: PrimeField, P: PoseidonRoundParams<F>> {
