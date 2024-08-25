@@ -237,7 +237,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         input: &[UInt8<F>],
     ) -> Result<Self::OutputVar, SynthesisError> {
         let f_var_vec: Vec<FpVar<F>> = input.to_constraint_field()?;
-
+        println!("F VAR VEC LEN {:?}", f_var_vec.len());
         // Choice is arbitrary
         let padding_const: F = F::from(101u32);
         let zero_const: F = F::zero();
