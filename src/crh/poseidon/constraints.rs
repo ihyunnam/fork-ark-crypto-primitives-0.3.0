@@ -1,3 +1,9 @@
+use ark_ff::{BigInteger, BigInteger256, BitIteratorLE, Fp256, One};
+use ark_ff::{
+    bytes::{FromBytes, ToBytes},
+    fields::{Field, PrimeField},
+    UniformRand,
+};
 use super::sbox::constraints::SboxConstraints;
 use super::PoseidonRoundParams;
 use super::{Poseidon, CRH};
