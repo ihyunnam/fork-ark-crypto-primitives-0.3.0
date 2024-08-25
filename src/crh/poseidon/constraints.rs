@@ -341,7 +341,7 @@ pub fn find_poseidon_ark_and_mds<F: PrimeField>(
 
     for i in 0..(rate + 1) {
         for j in 0..(rate + 1) {
-            mds[i][j] = (xs[i] + &ys[j]).inverse().unwrap();
+            mds[i][j] = (xs[i] + &ys[j]).inverse().unwrap_or(F::default());
         }
     }
 
