@@ -37,7 +37,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         assert_eq!(input.len(), width);
 
         let full_rounds_beginning = P::FULL_ROUNDS_BEGINNING;
-        println!("PERMUTE FULL ROUNDS BEGINNING GADGET {:?}", full_rounds_beginning);
+        //println!("PERMUTE FULL ROUNDS BEGINNING GADGET {:?}", full_rounds_beginning);
         let partial_rounds = P::PARTIAL_ROUNDS;
         let full_rounds_end = P::FULL_ROUNDS_END;
 
@@ -77,7 +77,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
             }
         }
 
-        println!("PERMUTE OUTPUT OF FIRST ROUND, GADGET {:?}", input_vars.value());
+        //println!("PERMUTE OUTPUT OF FIRST ROUND, GADGET {:?}", input_vars.value());
 
         // ------------ First rounds with full SBox begin --------------------
 
@@ -124,7 +124,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
         // ------------ Last rounds with full SBox begin --------------------
 
-        println!("PERMUTE OUTPUT OF MIDDLE ROUND, GADGET {:?}", input_vars.value());
+        //println!("PERMUTE OUTPUT OF MIDDLE ROUND, GADGET {:?}", input_vars.value());
 
         for _k in (full_rounds_beginning + partial_rounds)
             ..(full_rounds_beginning + partial_rounds + full_rounds_end)
@@ -161,7 +161,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
         // ------------ Last rounds with full SBox end --------------------
 
-        println!("PERMUTE OUTPUT, GADGET {:?}", input_vars.value());
+        //println!("PERMUTE OUTPUT, GADGET {:?}", input_vars.value());
 
         Ok(input_vars)
     }
@@ -205,7 +205,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         }
         let permutation_output = self.permute(inputs)?;
 
-        println!("HASH 2 permuation output, GADGET {:?}", permutation_output[1].value());
+        //println!("HASH 2 permuation output, GADGET {:?}", permutation_output[1].value());
         Ok(permutation_output[1].clone())
     }
 
@@ -216,7 +216,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
     ) -> Result<FpVar<F>, SynthesisError> {
         assert_eq!(input.len(), 4);
         let width = P::WIDTH;
-        println!("WIDTH INSIDE HASH 4, GADGET {:?}", width);
+        //println!("WIDTH INSIDE HASH 4, GADGET {:?}", width);
         // Only 4 inputs to the permutation are set to the input of this hash
         // function.
         assert_eq!(statics.len(), width - 4);
@@ -234,7 +234,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         }
 
         let permutation_output = self.permute(inputs)?;
-        println!("HASH 4 permuation output, GADGET {:?}", permutation_output[1].value());
+        //println!("HASH 4 permuation output, GADGET {:?}", permutation_output[1].value());
 
         Ok(permutation_output[1].to_owned())
     }
@@ -250,11 +250,11 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         input: &[UInt8<F>],
     ) -> Result<Self::OutputVar, SynthesisError> {
         let f_var_vec: Vec<FpVar<F>> = input.to_constraint_field()?;
-        println!("F VAR VEC LEN {:?}", f_var_vec.len());
+        //println!("F VAR VEC LEN {:?}", f_var_vec.len());
         // Choice is arbitrary
         let padding_const: F = F::from(101u32);
         let zero_const: F = F::zero();
-        println!("F VAR VEC {:?}", f_var_vec.value());
+        //println!("F VAR VEC {:?}", f_var_vec.value());
         let statics = match f_var_vec.len() {
             2 => {
                 vec![

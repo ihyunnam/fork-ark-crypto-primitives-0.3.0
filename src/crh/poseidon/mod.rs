@@ -45,7 +45,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
         assert_eq!(input.len(), width);
         // println!("WIDTH INSIDE PERMUTE, OUTSIDE {:?}", width);
         let full_rounds_beginning = P::FULL_ROUNDS_BEGINNING;
-        println!("PERMUTE FULL ROUNDS BEGINNING OUTSIDE {:?}", full_rounds_beginning);
+        // println!("PERMUTE FULL ROUNDS BEGINNING OUTSIDE {:?}", full_rounds_beginning);
         let partial_rounds = P::PARTIAL_ROUNDS;
         let full_rounds_end = P::FULL_ROUNDS_END;
 
@@ -77,7 +77,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             }
         }
 
-        println!("PERMUTE OUTPUT OF FIRST ROUND, OUTSIDE {:?}", current_state);
+        // println!("PERMUTE OUTPUT OF FIRST ROUND, OUTSIDE {:?}", current_state);
         // middle partial Sbox rounds
         for _ in full_rounds_beginning..(full_rounds_beginning + partial_rounds) {
             for i in 0..width {
@@ -104,7 +104,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
         }
 
         
-        println!("PERMUTE OUTPUT OF MIDDLE ROUND, OUTSIDE {:?}", current_state);
+        // println!("PERMUTE OUTPUT OF MIDDLE ROUND, OUTSIDE {:?}", current_state);
         // last full Sbox rounds
         for _ in full_rounds_beginning + partial_rounds
             ..(full_rounds_beginning + partial_rounds + full_rounds_end)
@@ -130,7 +130,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             }
         }
 
-        println!("PERMUTE OUTPUT, OUTSIDE {:?}", current_state);
+        // println!("PERMUTE OUTPUT, OUTSIDE {:?}", current_state);
 
         // Finally the current_state becomes the output
         current_state
@@ -149,10 +149,10 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             F::from(ZERO_CONST),
         ];
 
-        println!("HASH 2 OUTSIDE {:?}", input);
+        //println!("HASH 2 OUTSIDE {:?}", input);
         // Never take the first output
 
-        println!("HASH 2 output, OUTSIDE {:?}", self.permute(&input)[1]);
+        //println!("HASH 2 output, OUTSIDE {:?}", self.permute(&input)[1]);
         self.permute(&input)[1]
     }
 
@@ -169,9 +169,9 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             F::from(PADDING_CONST),
         ];
 
-        println!("HASH 4 INPUT {:?}", input);
+        //println!("HASH 4 INPUT {:?}", input);
 
-        println!("HASH 4 output, OUTSIDE {:?}", self.permute(&input)[1]);
+        //println!("HASH 4 output, OUTSIDE {:?}", self.permute(&input)[1]);
 
         // Never take the first output
         self.permute(&input)[1]
@@ -198,8 +198,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHTrait for CRH<F, P> {
     fn evaluate(parameters: &Self::Parameters, input: &[u8]) -> Result<Self::Output, Error> {
         let eval_time = start_timer!(|| "PoseidonCRH::Eval");
         let elts: Vec<F> = input.to_field_elements().unwrap_or_default();
-        println!("ELTS LENGTH {:?}", elts.len());
-        println!("ELTS {:?}", elts);
+        //println!("ELTS LENGTH {:?}", elts.len());
+        //println!("ELTS {:?}", elts);
         let result = match elts.len() {
             2 => parameters.hash_2(elts[0], elts[1]),
             4 => parameters.hash_4([elts[0], elts[1], elts[2], elts[3]]),
