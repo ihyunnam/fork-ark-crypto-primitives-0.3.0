@@ -43,7 +43,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
     fn permute(&self, input: &[F]) -> Vec<F> {
         let width = P::WIDTH;
         assert_eq!(input.len(), width);
-
+        println!("WIDTH INSIDE PERMUTE, OUTSIDE {:?}", width);
         let full_rounds_beginning = P::FULL_ROUNDS_BEGINNING;
         let partial_rounds = P::PARTIAL_ROUNDS;
         let full_rounds_end = P::FULL_ROUNDS_END;
@@ -126,6 +126,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             }
         }
 
+        println!("current_state INSIDE PERMUTE, OUTSIDE {:?}", current_state);
+
         // Finally the current_state becomes the output
         current_state
     }
@@ -143,6 +145,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             F::from(ZERO_CONST),
         ];
 
+        println!("HASH 2 INPUT {:?}", input);
         // Never take the first output
         self.permute(&input)[1]
     }
@@ -159,6 +162,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> Poseidon<F, P> {
             inputs[3],
             F::from(PADDING_CONST),
         ];
+
+        println!("HASH 4 INPUT {:?}", input);
 
         // Never take the first output
         self.permute(&input)[1]
@@ -186,6 +191,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHTrait for CRH<F, P> {
         let eval_time = start_timer!(|| "PoseidonCRH::Eval");
         let elts: Vec<F> = input.to_field_elements().unwrap_or_default();
         println!("ELTS LENGTH {:?}", elts.len());
+        println!("ELTS {:?}", elts);
         let result = match elts.len() {
             2 => parameters.hash_2(elts[0], elts[1]),
             4 => parameters.hash_4([elts[0], elts[1], elts[2], elts[3]]),

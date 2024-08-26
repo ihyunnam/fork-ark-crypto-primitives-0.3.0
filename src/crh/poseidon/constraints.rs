@@ -181,6 +181,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         statics: Vec<FpVar<F>>,
     ) -> Result<FpVar<F>, SynthesisError> {
         let width = P::WIDTH;
+        println!("WIDTH INSIDE HASH 2, GADGET {:?}", width);
         // Only 2 inputs to the permutation are set to the input of this hash
         // function.
         assert_eq!(statics.len(), width - 2);
@@ -206,6 +207,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
     ) -> Result<FpVar<F>, SynthesisError> {
         assert_eq!(input.len(), 4);
         let width = P::WIDTH;
+        println!("WIDTH INSIDE HASH 4, GADGET {:?}", width);
         // Only 4 inputs to the permutation are set to the input of this hash
         // function.
         assert_eq!(statics.len(), width - 4);
@@ -223,6 +225,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         }
 
         let permutation_output = self.permute(inputs)?;
+        // println!("HASH 2 result, GADGET {:?}", permutation_output[1].to_owned());
+
         Ok(permutation_output[1].to_owned())
     }
 }
@@ -241,7 +245,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         // Choice is arbitrary
         let padding_const: F = F::from(101u32);
         let zero_const: F = F::zero();
-
+        println!("F VAR VEC {:?}", f_var_vec.value());
         let statics = match f_var_vec.len() {
             2 => {
                 vec![
