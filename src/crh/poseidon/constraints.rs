@@ -77,7 +77,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
             }
         }
 
-        println!("PERMUTE OUTPUT OF FIRST ROUND, GADGET {:?}", input_vars);
+        println!("PERMUTE OUTPUT OF FIRST ROUND, GADGET {:?}", input_vars.value());
 
         // ------------ First rounds with full SBox begin --------------------
 
@@ -124,7 +124,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
         // ------------ Last rounds with full SBox begin --------------------
 
-        println!("PERMUTE OUTPUT OF MIDDLE ROUND, GADGET {:?}", input_vars);
+        println!("PERMUTE OUTPUT OF MIDDLE ROUND, GADGET {:?}", input_vars.value());
 
         for _k in (full_rounds_beginning + partial_rounds)
             ..(full_rounds_beginning + partial_rounds + full_rounds_end)
@@ -161,7 +161,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
         // ------------ Last rounds with full SBox end --------------------
 
-        println!("PERMUTE OUTPUT, GADGET {:?}", input_vars);
+        println!("PERMUTE OUTPUT, GADGET {:?}", input_vars.value());
 
         Ok(input_vars)
     }
