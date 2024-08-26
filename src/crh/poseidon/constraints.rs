@@ -205,7 +205,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         }
         let permutation_output = self.permute(inputs)?;
 
-        println!("HASH 2 permuation output, GADGET {:?}", permutation_output[1]);
+        println!("HASH 2 permuation output, GADGET {:?}", permutation_output[1].value());
         Ok(permutation_output[1].clone())
     }
 
@@ -234,7 +234,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         }
 
         let permutation_output = self.permute(inputs)?;
-        println!("HASH 4 permuation output, GADGET {:?}", permutation_output[1]);
+        println!("HASH 4 permuation output, GADGET {:?}", permutation_output[1].value());
 
         Ok(permutation_output[1].to_owned())
     }
