@@ -49,7 +49,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
         for _k in 0..full_rounds_beginning {
             // TODO: Check if Scalar::default() can be replaced by FpVar<F>::one() or FpVar<F>::zero()
-            let mut sbox_outputs: Vec<FpVar<F>> = vec![FpVar::<F>::one(); width];
+            let mut sbox_outputs: Vec<FpVar<F>> = vec![FpVar::<F>::zero(); width];
 
             // Substitution (S-box) layer
             for i in 0..width {
@@ -62,7 +62,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
             }
 
             // TODO: Check if Scalar::default() can be replaced by FpVar<F>::one()
-            let mut next_input_vars: Vec<FpVar<F>> = vec![FpVar::<F>::one(); width];
+            let mut next_input_vars: Vec<FpVar<F>> = vec![FpVar::<F>::zero(); width];
 
             self.apply_linear_layer(
                 width,
@@ -84,7 +84,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
         // ------------ Middle rounds with partial SBox begin --------------------
 
         for _k in full_rounds_beginning..(full_rounds_beginning + partial_rounds) {
-            let mut sbox_outputs: Vec<FpVar<F>> = vec![FpVar::<F>::one(); width];
+            let mut sbox_outputs: Vec<FpVar<F>> = vec![FpVar::<F>::zero(); width];
 
             // Substitution (S-box) layer
             for i in 0..width {
@@ -105,7 +105,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
             // Linear layer
             // TODO: Check if Scalar::default() can be replaced by FpVar<F>::one()
-            let mut next_input_vars: Vec<FpVar<F>> = vec![FpVar::<F>::one(); width];
+            let mut next_input_vars: Vec<FpVar<F>> = vec![FpVar::<F>::zero(); width];
 
             self.apply_linear_layer(
                 width,
@@ -130,7 +130,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
             ..(full_rounds_beginning + partial_rounds + full_rounds_end)
         {
             // TODO: Check if Scalar::default() can be replaced by FpVar<F>::one()
-            let mut sbox_outputs: Vec<FpVar<F>> = vec![FpVar::<F>::one(); width];
+            let mut sbox_outputs: Vec<FpVar<F>> = vec![FpVar::<F>::zero(); width];
 
             // Substitution (S-box) layer
             for i in 0..width {
@@ -144,7 +144,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> PoseidonRoundParamsVar<F, P> {
 
             // Linear layer
             // TODO: Check if Scalar::default() can be replaced by FpVar<F>::one()
-            let mut next_input_vars: Vec<FpVar<F>> = vec![FpVar::<F>::one(); width];
+            let mut next_input_vars: Vec<FpVar<F>> = vec![FpVar::<F>::zero(); width];
 
             self.apply_linear_layer(
                 width,
