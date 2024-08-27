@@ -245,8 +245,6 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
     type OutputVar = FpVar<F>;
     type ParametersVar = PoseidonRoundParamsVar<F, P>;
 
-    
-
     fn evaluate(
         parameters: &Self::ParametersVar,
         input: &[UInt8<F>],
@@ -262,10 +260,10 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         let len_is_4 = Boolean::<F>::constant(f_var_vec.len() == 4);
         let valid_len = len_is_2.or(&len_is_4).unwrap();
 
-        println!("len_is_2 {:?}", len_is_2);        // true
-        println!("len_is_4 {:?}", len_is_4);        // false
+        // println!("len_is_2 {:?}", len_is_2);        // true
+        // println!("len_is_4 {:?}", len_is_4);        // false
         // Enforce that `f_var_vec.len()` must be 2 or 4
-        valid_len.enforce_equal(&Boolean::TRUE).unwrap();  // This will fail the circuit if the length is not 2 or 4
+        valid_len.enforce_equal(&Boolean::TRUE); // This will fail the circuit if the length is not 2 or 4
 
         let statics_select_from = vec![
             FpVar::<F>::Constant(zero_const),
@@ -276,7 +274,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
 
         let index = len_is_2.select(&UInt8::<F>::constant(3), &UInt8::<F>::constant(1)).unwrap();
 
-        println!("index {:?}", index);      // 3
+        // println!("index {:?}", index);      // 3
         let mut statics = vec![];
         for i in 0..(index.value().unwrap() + 1) as usize {
             
@@ -299,33 +297,6 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
 
         // Conditionally select the correct `result` based on `len_is_2`
         let result = len_is_2.select(&result_len_2, &result_len_4);
-            // .conditionally_select(&result_len_2, &result_len_4)
-            // .unwrap();
-        
-        //println!("F VAR VEC {:?}", f_var_vec.value());
-        // let statics = match f_var_vec.len() {
-        //     2 => {
-        //         vec![
-        //             FpVar::<F>::Constant(zero_const),
-        //             FpVar::<F>::Constant(padding_const),
-        //             FpVar::<F>::Constant(zero_const),
-        //             FpVar::<F>::Constant(zero_const),
-        //         ]
-        //     }
-        //     4 => {
-        //         vec![
-        //             FpVar::<F>::Constant(zero_const),
-        //             FpVar::<F>::Constant(padding_const),
-        //         ]
-        //     }
-        //     _ => panic!("incorrect number (elements) for poseidon hash"),
-        // };
-
-        // let result = match f_var_vec.len() {
-        //     2 => parameters.hash_2(f_var_vec[0].clone(), f_var_vec[1].clone(), statics),
-        //     4 => parameters.hash_4(&f_var_vec, statics),
-        //     _ => panic!("incorrect number (elements) for poseidon hash"),
-        // };
 
         Ok(result.unwrap_or(Self::OutputVar::zero()))
     }
