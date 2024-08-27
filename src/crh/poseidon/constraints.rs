@@ -278,48 +278,16 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         for i in 0..(index.value().unwrap() + 1) as usize {
             statics.push(statics_select_from[i].clone());           // TODO: remove clone
         };
-
-        // let statics_len_4 = vec![];
-
-        // let temp = vec![
-        //     FpVar::<F>::Constant(zero_const),
-        //     FpVar::<F>::Constant(padding_const),
-        // ];
-
-        // let to_append = len_is_2.select(&)
-
-        // Precompute the possible `statics` values for each case
         
-
-        // let statics_len_4 = vec![
-        //     FpVar::<F>::Constant(zero_const),
-        //     FpVar::<F>::Constant(padding_const),
-        // ];
-
-        // let statics = len_is_2.select(&statics_len_2, &statics_len_4).unwrap();
-
-        // let to_append = FpVar::<F>::conditionally_select(
-        //     &len_is_2,
-        //     &FpVar::<F>::Constant(zero_const),      // true value
-        //     &FpVar::<F>::constant(i_value.checked_sub(1).unwrap_or(0)),        // false vlaue
-        // )?;
-
-        // statics = statics.append(to_append);
-
-        // Conditionally select the correct `statics` based on `len_is_2`
-        // let statics = len_is_2
-        //     .conditionally_select(
-        //         &FpVar::constant_vector(statics_len_2),
-        //         &FpVar::constant_vector(statics_len_4),
-        //     )
-        //     .unwrap(); // Handle potential errors appropriately
-
-        // Precompute the possible results for each case
         let result_len_2 = parameters.hash_2(
             f_var_vec[0].clone(),
             f_var_vec[1].clone(),
             statics.clone(),
         ).unwrap();
+
+        for i in f_var_vec.len()..4 {
+            f_var_vec.push(FpVar::<F>::Constant(zero_const));
+        }
 
         let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone()).unwrap();
 
