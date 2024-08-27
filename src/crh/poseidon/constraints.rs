@@ -245,23 +245,36 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
     type OutputVar = FpVar<F>;
     type ParametersVar = PoseidonRoundParamsVar<F, P>;
 
+    
+
     fn evaluate(
         parameters: &Self::ParametersVar,
         input: &[UInt8<F>],
     ) -> Result<Self::OutputVar, SynthesisError> {
         let f_var_vec: Vec<FpVar<F>> = input.to_constraint_field()?;
         println!("F VAR VEC LEN {:?}", f_var_vec.len());
-        
+
         // Choice is arbitrary
         let padding_const: F = F::from(101u32);
         let zero_const: F = F::zero();
 
-        let len_is_2 = Boolean::constant(f_var_vec.len() == 2);
-        let len_is_4 = Boolean::constant(f_var_vec.len() == 4);
+        let len_is_2 = Boolean::<F>::constant(f_var_vec.len() == 2);
+        let len_is_4 = Boolean::<F>::constant(f_var_vec.len() == 4);
         let valid_len = len_is_2.or(&len_is_4).unwrap();
 
         // Enforce that `f_var_vec.len()` must be 2 or 4
         valid_len.enforce_equal(&Boolean::TRUE).unwrap();  // This will fail the circuit if the length is not 2 or 4
+
+        // let statics = vec![
+        //     FpVar::<F>::Constant(zero_const),
+        //     FpVar::<F>::Constant(padding_const),
+        // ];
+
+        // let temp = vec![];
+        // let in_case_2 = vec![
+        //     FpVar::<F>::Constant(zero_const),
+        //     FpVar::<F>::Constant(zero_const),
+        // ];
 
         // Precompute the possible `statics` values for each case
         let statics_len_2 = vec![
@@ -276,13 +289,23 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
             FpVar::<F>::Constant(padding_const),
         ];
 
+        let statics = len_is_2.select(&statics_len_2, &statics_len_4).unwrap();
+
+        // let to_append = FpVar::<F>::conditionally_select(
+        //     &len_is_2,
+        //     &FpVar::<F>::Constant(zero_const),      // true value
+        //     &FpVar::<F>::constant(i_value.checked_sub(1).unwrap_or(0)),        // false vlaue
+        // )?;
+
+        // statics = statics.append(to_append);
+
         // Conditionally select the correct `statics` based on `len_is_2`
-        let statics = len_is_2
-            .conditionally_select(
-                &FpVar::constant_vector(statics_len_2),
-                &FpVar::constant_vector(statics_len_4),
-            )
-            .unwrap(); // Handle potential errors appropriately
+        // let statics = len_is_2
+        //     .conditionally_select(
+        //         &FpVar::constant_vector(statics_len_2),
+        //         &FpVar::constant_vector(statics_len_4),
+        //     )
+        //     .unwrap(); // Handle potential errors appropriately
 
         // Precompute the possible results for each case
         let result_len_2 = parameters.hash_2(
@@ -294,10 +317,9 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone());
 
         // Conditionally select the correct `result` based on `len_is_2`
-        let result = len_is_2
-            .conditionally_select(&result_len_2, &result_len_4)
-            .unwrap();
-
+        let result = len_is_2.select(&result_len_2, &result_len_4);
+            // .conditionally_select(&result_len_2, &result_len_4)
+            // .unwrap();
         
         //println!("F VAR VEC {:?}", f_var_vec.value());
         // let statics = match f_var_vec.len() {
