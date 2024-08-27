@@ -291,8 +291,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
             f_var_vec.push(FpVar::<F>::Constant(zero_const));
         }
 
-        statics.pop();
-        statics.pop();
+        // statics.pop();
+        // statics.pop();
         let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone()).unwrap();
 
         // Conditionally select the correct `result` based on `len_is_2`
