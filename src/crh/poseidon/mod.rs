@@ -184,7 +184,7 @@ pub struct CRH<F: PrimeField, P: PoseidonRoundParams<F>> {
 }
 
 impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHTrait for CRH<F, P> {
-    const INPUT_SIZE_BITS: usize = 512;
+    const INPUT_SIZE_BITS: usize = 640;
     type Output = F;
     type Parameters = Poseidon<F, P>;
 
