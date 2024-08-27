@@ -272,10 +272,10 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
             FpVar::<F>::Constant(zero_const),
         ];
 
-        let index = len_is_2.select(&[3], &[1]).unwrap();
+        let index = len_is_2.select(&UInt8::<ConstraintF<C>>::constant(3), &UInt8::<ConstraintF<C>>::constant(1)).unwrap();
 
         let statics = vec![];
-        for i in 0..(index[0] + 1) as usize {
+        for i in 0..(index.value().unwrap() + 1) as usize {
             statics.push(statics_select_from[i]);
         };
 
