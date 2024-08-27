@@ -265,31 +265,38 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         // Enforce that `f_var_vec.len()` must be 2 or 4
         valid_len.enforce_equal(&Boolean::TRUE).unwrap();  // This will fail the circuit if the length is not 2 or 4
 
-        // let statics = vec![
+        let statics_select_from = vec![
+            FpVar::<F>::Constant(zero_const),
+            FpVar::<F>::Constant(padding_const),
+            FpVar::<F>::Constant(zero_const),
+            FpVar::<F>::Constant(zero_const),
+        ];
+
+        let index = len_is_2.select(&3, &1);
+
+        let statics = vec![];
+        for i in 0..(index + 1) as usize {
+            statics.push(statics_select_from[i]);
+        };
+
+        // let statics_len_4 = vec![];
+
+        // let temp = vec![
         //     FpVar::<F>::Constant(zero_const),
         //     FpVar::<F>::Constant(padding_const),
         // ];
 
-        // let temp = vec![];
-        // let in_case_2 = vec![
-        //     FpVar::<F>::Constant(zero_const),
-        //     FpVar::<F>::Constant(zero_const),
-        // ];
+        // let to_append = len_is_2.select(&)
 
         // Precompute the possible `statics` values for each case
-        let statics_len_2 = vec![
-            FpVar::<F>::Constant(zero_const),
-            FpVar::<F>::Constant(padding_const),
-            FpVar::<F>::Constant(zero_const),
-            FpVar::<F>::Constant(zero_const),
-        ];
+        
 
-        let statics_len_4 = vec![
-            FpVar::<F>::Constant(zero_const),
-            FpVar::<F>::Constant(padding_const),
-        ];
+        // let statics_len_4 = vec![
+        //     FpVar::<F>::Constant(zero_const),
+        //     FpVar::<F>::Constant(padding_const),
+        // ];
 
-        let statics = len_is_2.select(&statics_len_2, &statics_len_4).unwrap();
+        // let statics = len_is_2.select(&statics_len_2, &statics_len_4).unwrap();
 
         // let to_append = FpVar::<F>::conditionally_select(
         //     &len_is_2,
@@ -312,9 +319,9 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
             f_var_vec[0].clone(),
             f_var_vec[1].clone(),
             statics.clone(),
-        );
+        ).unwrap();
 
-        let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone());
+        let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone()).unwrap();
 
         // Conditionally select the correct `result` based on `len_is_2`
         let result = len_is_2.select(&result_len_2, &result_len_4);
