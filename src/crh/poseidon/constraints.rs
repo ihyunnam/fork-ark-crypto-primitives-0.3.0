@@ -274,9 +274,9 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
 
         let index = len_is_2.select(&UInt8::<F>::constant(3), &UInt8::<F>::constant(1)).unwrap();
 
-        let statics = vec![];
+        let mut statics = vec![];
         for i in 0..(index.value().unwrap() + 1) as usize {
-            statics.push(statics_select_from[i]);
+            statics.push(statics_select_from[i].clone());           // TODO: remove clone
         };
 
         // let statics_len_4 = vec![];
