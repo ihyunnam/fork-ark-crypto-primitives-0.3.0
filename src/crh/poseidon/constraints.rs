@@ -262,8 +262,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         let len_is_4 = Boolean::<F>::constant(f_var_vec.len() == 4);
         let valid_len = len_is_2.or(&len_is_4).unwrap();
 
-        println!("len_is_2 {:?}", len_is_2);
-        println!("len_is_4 {:?}", len_is_4);
+        println!("len_is_2 {:?}", len_is_2);        // true
+        println!("len_is_4 {:?}", len_is_4);        // false
         // Enforce that `f_var_vec.len()` must be 2 or 4
         valid_len.enforce_equal(&Boolean::TRUE).unwrap();  // This will fail the circuit if the length is not 2 or 4
 
@@ -276,7 +276,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
 
         let index = len_is_2.select(&UInt8::<F>::constant(3), &UInt8::<F>::constant(1)).unwrap();
 
-        println!("index {:?}", index);
+        println!("index {:?}", index);      // 3
         let mut statics = vec![];
         for i in 0..(index.value().unwrap() + 1) as usize {
             
@@ -293,6 +293,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
             f_var_vec.push(FpVar::<F>::Constant(zero_const));
         }
 
+        statics.pop();
+        statics.pop();
         let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone()).unwrap();
 
         // Conditionally select the correct `result` based on `len_is_2`
