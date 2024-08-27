@@ -250,7 +250,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         input: &[UInt8<F>],
     ) -> Result<Self::OutputVar, SynthesisError> {
         let mut f_var_vec: Vec<FpVar<F>> = input.to_constraint_field()?;
-        println!("F VAR VEC LEN {:?}", f_var_vec.len());
+        // println!("F VAR VEC LEN {:?}", f_var_vec.len());
 
         // Choice is arbitrary
         let padding_const: F = F::from(101u32);
@@ -260,26 +260,26 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         let len_is_4 = Boolean::<F>::constant(f_var_vec.len() == 4);
         let valid_len = len_is_2.or(&len_is_4).unwrap();
 
-        println!("len_is_2 {:?}", len_is_2);        // true
-        println!("len_is_4 {:?}", len_is_4);        // false
+        // println!("len_is_2 {:?}", len_is_2);        // true
+        // println!("len_is_4 {:?}", len_is_4);        // false
         // Enforce that `f_var_vec.len()` must be 2 or 4
         valid_len.enforce_equal(&Boolean::TRUE); // This will fail the circuit if the length is not 2 or 4
 
-        let statics_select_from = vec![
+        let statics = vec![
             FpVar::<F>::Constant(zero_const),
             FpVar::<F>::Constant(padding_const),
             FpVar::<F>::Constant(zero_const),
             FpVar::<F>::Constant(zero_const),
         ];
 
-        let index = len_is_2.select(&UInt8::<F>::constant(3), &UInt8::<F>::constant(1)).unwrap();
+        // let index = len_is_2.select(&UInt8::<F>::constant(3), &UInt8::<F>::constant(1)).unwrap();
 
-        println!("index {:?}", index);      // 3
-        let mut statics = vec![];
-        for i in 0..(index.value().unwrap() + 1) as usize {
-            println!("pushing in eval");
-            statics.push(statics_select_from[i].clone());           // TODO: remove clone
-        };
+        // println!("index {:?}", index);      // 3
+        // let mut statics = vec![];
+        // for i in 0..(index.value().unwrap() + 1) as usize {
+        //     println!("pushing in eval");
+        //     statics.push(statics_select_from[i].clone());           // TODO: remove clone
+        // };
         
         let result_len_2 = parameters.hash_2(
             f_var_vec[0].clone(),
@@ -291,8 +291,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
             f_var_vec.push(FpVar::<F>::Constant(zero_const));
         }
 
-        // statics.pop();
-        // statics.pop();
+        statics.pop();
+        statics.pop();
         let result_len_4 = parameters.hash_4(&f_var_vec, statics.clone()).unwrap();
 
         // Conditionally select the correct `result` based on `len_is_2`
