@@ -265,7 +265,7 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHGadgetTrait<CRH<F, P>, F> for 
         // Enforce that `f_var_vec.len()` must be 2 or 4
         valid_len.enforce_equal(&Boolean::TRUE); // This will fail the circuit if the length is not 2 or 4
 
-        let statics = vec![
+        let mut statics = vec![
             FpVar::<F>::Constant(zero_const),
             FpVar::<F>::Constant(padding_const),
             FpVar::<F>::Constant(zero_const),
