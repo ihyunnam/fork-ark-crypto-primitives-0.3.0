@@ -1,5 +1,5 @@
 use crate::Error;
-use ark_ff::bytes::ToBytes;
+// use ark_ff::bytes::ToBytes;
 use ark_std::hash::Hash;
 use ark_std::rand::Rng;
 
@@ -12,8 +12,9 @@ pub mod schnorr;
 
 pub trait SignatureScheme {
     type Parameters: Clone + Send + Sync;
-    type PublicKey: ToBytes + Hash + Eq + Clone + Default + Send + Sync;
-    type SecretKey: ToBytes + Clone + Default;
+    type PublicKey: Hash + Eq + Clone + Default + Send + Sync;
+    // type SecretKey: ToBytes + Clone + Default;
+    type SecretKey: Clone + Default;
     type Signature: Clone + Default + Send + Sync;
 
     fn setup<R: Rng>(rng: &mut R) -> Result<Self::Parameters, Error>;

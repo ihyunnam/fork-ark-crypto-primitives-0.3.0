@@ -198,8 +198,8 @@ impl<F: PrimeField, P: PoseidonRoundParams<F>> CRHTrait for CRH<F, P> {
     fn evaluate(parameters: &Self::Parameters, input: &[u8]) -> Result<Self::Output, Error> {
         let eval_time = start_timer!(|| "PoseidonCRH::Eval");
         let elts: Vec<F> = input.to_field_elements().unwrap_or_default();
-        // println!("ELTS LENGTH {:?}", elts.len());
-        //println!("ELTS {:?}", elts);
+        println!("ELTS LENGTH {:?}", elts.len());
+        // println!("ELTS {:?}", elts);
         let result = match elts.len() {
             2 => parameters.hash_2(elts[0], elts[1]),
             4 => parameters.hash_4([elts[0], elts[1], elts[2], elts[3]]),
